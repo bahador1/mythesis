@@ -1,9 +1,8 @@
 import config
-from math import log2
-
+import math
 import ujson as json
-
 from collections import Counter
+
 import string
 import argparse
 import random
@@ -30,7 +29,7 @@ class SQuADDataset(Dataset):
         self.context_idxs = torch.from_numpy(data["context_idxs"]).long()
         self.context_char_idxs = torch.from_numpy(data["context_char_idxs"]).long()
         self.ques_idxs = torch.from_numpy(data["ques_idxs"]).long()
-        self.ques_char_idxs = torch.from_numpy(data["ques_char_idxs"]).long()
+        self.quesgit_char_idxs = torch.from_numpy(data["ques_char_idxs"]).long()
         self.y1s = torch.from_numpy(data["y1s"]).long()
         self.y2s = torch.from_numpy(data["y2s"]).long()
         self.ids = torch.from_numpy(data["ids"]).long()
@@ -272,8 +271,8 @@ def train_entry():
         if p.requires_grad: ema.set(name, p)
     params = filter(lambda param: param.requires_grad, model.parameters())
     optimizer = optim.Adam(lr=base_lr, betas=(config.beta1, config.beta2), eps=1e-7, weight_decay=3e-7, params=params)
-    cr = lr / log2(warm_up)
-    scheduler = optim.lr_scheduler.LambdaLR(optimizer, lr_lambda=lambda ee: cr * log2(ee + 1) if ee < warm_up else lr)
+    cr = lr / math.log2(warm_up)
+    scheduler = optim.lr_scheduler.LambdaLR(optimizer, lr_lambda=lambda ee: cr * math.log2(ee + 1) if ee < warm_up else lr)
     L = config.checkpoint
     N = config.num_steps
     best_f1 = best_em = patience = 0
@@ -323,3 +322,8 @@ if __name__ == '__main__':
     else:
         print("Unknown mode")
         exit(0)
+
+
+
+
+git remote add origin https://bahador1/mythesis11AE6OYQA0uOeYX6tjAYsr_qxl464Vd4sBS51QQ8Vle5QuqSPF8cfx7W1L3WHThv2SULGT526IJCWEBSQg@github.com/bahador1/mythesis.git
